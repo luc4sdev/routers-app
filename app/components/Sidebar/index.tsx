@@ -1,7 +1,7 @@
 'use client'
 
 import { Logo } from "./Logo";
-import { BarChart, Home, Menu, Search } from 'lucide-react'
+import { User, Router, Menu, Search } from 'lucide-react'
 import { NavItem } from "./NavItem";
 import { InputControl, InputPrefix, InputRoot } from "../Form/Input";
 import * as Collapsible from '@radix-ui/react-collapsible'
@@ -29,8 +29,8 @@ export function Sidebar() {
                 </InputRoot>
 
                 <nav className="space-y-0.5">
-                    <NavItem title="Clients" icon={Home} />
-                    <NavItem title="Routers" icon={BarChart} />
+                    <NavItem title="Clients" icon={User} />
+                    <NavItem title="Routers" icon={Router} />
                 </nav>
 
 

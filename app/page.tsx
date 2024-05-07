@@ -1,5 +1,7 @@
 export default function Home() {
   return (
-    <h1>Hello World!</h1>
-  );
+    <div className="mt-6 flex flex-col">
+      Hello World!!
+    </div>
+  )
 }
