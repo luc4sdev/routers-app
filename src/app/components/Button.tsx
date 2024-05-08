@@ -15,7 +15,7 @@ const button = tv({
             primary:
                 'bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600',
             outline:
-                'border border-zinc-300 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800',
+                'border-2 border-emerald-300 text-zinc-700 hover:bg-zinc-50 dark:border-emerald-700 dark:text-zinc-300 dark:hover:bg-zinc-800',
         },
     },
     defaultVariants: {

@@ -29,8 +29,8 @@ export function Sidebar() {
                 </InputRoot>
 
                 <nav className="space-y-0.5">
-                    <NavItem title="Clients" icon={User} />
-                    <NavItem title="Routers" icon={Router} />
+                    <NavItem url="/clients" title="Clientes" icon={User} />
+                    <NavItem url="routers" title="Roteadores" icon={Router} />
                 </nav>
 
 
