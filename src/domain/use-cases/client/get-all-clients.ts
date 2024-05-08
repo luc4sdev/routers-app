@@ -5,7 +5,5 @@ export interface GetAllClientsUseCase {
 }
 
 export namespace GetAllClientsUseCase {
-    export type Response = {
-        clients: Client[]
-    }
+    export type Response = Client[] | Error
 }

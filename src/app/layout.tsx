@@ -5,7 +5,8 @@ import { Sidebar } from "./components/Sidebar";
 import { ThemeProvider } from "next-themes";
 import { Header } from "./components/Header";
 import { Providers } from "@/providers/Providers";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 const inter = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
               </main>
             </div>
           </ThemeProvider>
+          <ToastContainer stacked />
         </Providers>
       </body>
 
