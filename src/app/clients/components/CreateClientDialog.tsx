@@ -9,10 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateClient } from '@/hooks/client/useCreateClient';
 import { useQueryClient } from '@tanstack/react-query';
 import { toastMessage } from '@/utils/helpers/toast-message';
-import { useState } from 'react';
+import { useUpdateClient } from '@/hooks/client/useUpdateClient';
+import { Client } from '@/domain/entities/client';
+import { useGetAddress } from '@/hooks/address/useGetAddress';
+import { useEffect, useState } from 'react';
+import { Address } from '@/domain/entities/address';
 
 interface CreateClientDialogProps {
-    title: string
+    openClientDialog: boolean
+    clientToBeEdited: Client | null
+    setOpenCreateClientDialog: (openDialog: boolean) => void
+    setClientToBeEdited: (client: Client | null) => void
 }
 
 const AddressSchema = z.object({
@@ -25,29 +32,33 @@ const AddressSchema = z.object({
 
 const createClientSchema = z.object({
     name: z.string().min(1, "Insira o nome"),
-    //type: z.enum(['FISICA', 'JURIDICA']),
-    document: z.string().min(1, "Insira o documento"),
+    document: z.string().min(11, "Insira o documento").max(14, 'O documento deve ser válido'),
     birthDate: z.string().min(1, "Insira a data de nascimemto"),
     address: AddressSchema,
     active: z.boolean().default(false)
 })
 
+
 type createClientSchema = z.infer<typeof createClientSchema>
 
-export function CreateClientDialog({ title }: CreateClientDialogProps) {
+export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpenCreateClientDialog, setClientToBeEdited }: CreateClientDialogProps) {
 
-    const [openDialog, setOpenDialog] = useState(false)
+    const { data: addressData } = useGetAddress({ addressId: clientToBeEdited ? clientToBeEdited.addressId : '' })
+    const { mutate: mutateCreateClient } = useCreateClient()
+    const { mutate: mutateUpdateClient } = useUpdateClient()
 
-    const { mutate: mutateCreateClient, isPending } = useCreateClient()
-
-    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<createClientSchema>({
+    const { register, handleSubmit, setValue, getValues, reset, formState: { errors } } = useForm<createClientSchema>({
         resolver: zodResolver(createClientSchema)
+
     })
     const queryCLient = useQueryClient()
 
+    function isNotError(value: any): value is Address {
+        return !(value instanceof Error);
+    }
+
     async function createClient(data: createClientSchema) {
-        console.log(data)
-        const type = data.document.length > 11 ? 'FISICA' : 'JURIDICA'
+        const type = data.document.length <= 11 ? 'FISICA' : 'JURIDICA'
         try {
             mutateCreateClient({
                 name: data.name,
@@ -72,8 +83,8 @@ export function CreateClientDialog({ title }: CreateClientDialogProps) {
                         message: 'Cliente criado com sucesso!',
                         type: 'success'
                     })
-                    setOpenDialog(false)
                     reset()
+                    setOpenCreateClientDialog(false)
                 },
                 onError: (error) => {
                     console.error(error)
@@ -86,16 +97,81 @@ export function CreateClientDialog({ title }: CreateClientDialogProps) {
         }
     }
 
+
+    async function updateClient(data: createClientSchema) {
+        const type = data.document.length <= 11 ? 'FISICA' : 'JURIDICA'
+        console.log(data)
+        try {
+            mutateUpdateClient({
+                id: clientToBeEdited ? clientToBeEdited.id : '',
+                name: data.name,
+                type,
+                document: data.document,
+                birthDate: data.birthDate,
+                address: {
+                    street: data.address.street,
+                    number: data.address.number,
+                    cep: data.address.cep,
+                    neighborhood: data.address.neighborhood,
+                    city: data.address.city
+                },
+                active: data.active
+            }, {
+                onSuccess: () => {
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-all-clients'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-address'],
+                        exact: false
+                    })
+                    toastMessage({
+                        message: 'Cliente atualizado com sucesso!',
+                        type: 'success'
+                    })
+                    reset()
+                    setOpenCreateClientDialog(false)
+                    setClientToBeEdited(null)
+
+                },
+                onError: (error) => {
+                    console.error(error)
+                }
+            })
+
+        } catch (error: any) {
+            return console.error(error.message)
+        } finally {
+        }
+    }
+
+    useEffect(() => {
+        if (clientToBeEdited) {
+
+            if (addressData !== undefined && isNotError(addressData)) {
+                setValue("name", clientToBeEdited.name)
+                setValue("document", clientToBeEdited.document)
+                setValue("birthDate", clientToBeEdited.birthDate)
+                setValue("address.street", addressData.street)
+                setValue("address.number", addressData.number)
+                setValue("address.cep", addressData.cep)
+                setValue("address.neighborhood", addressData.neighborhood)
+                setValue("address.city", addressData.city)
+            }
+        }
+    }, [addressData])
+
     return (
         <Dialog.Root
-            open={openDialog}
+            open={openClientDialog}
         >
             <Dialog.Trigger asChild>
-                <Button onClick={() => setOpenDialog(true)} className="w-auto md:w-36 xl:w-auto">{title}</Button>
+                <Button onClick={() => setOpenCreateClientDialog(true)} className="w-auto md:w-36 xl:w-auto">Cadastrar Cliente</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="backdrop-blur-sm data-[state=open]: fixed inset-0" />
-                <Dialog.Content className="overflow-y-scroll lg:overflow-y-hidden data-[state=open]: fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                <Dialog.Content className="overflow-y-scroll lg:overflow-y-hidden data-[state=open]: fixed top-[60%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[85vh] w-[90vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                     <Dialog.Title className="text-lg font-medium">
                         Cadastro
                     </Dialog.Title>
@@ -205,6 +281,7 @@ export function CreateClientDialog({ title }: CreateClientDialogProps) {
 
                     <div className="flex items-center">
                         <Checkbox.Root
+                            defaultChecked={clientToBeEdited ? clientToBeEdited.active! : false}
                             onCheckedChange={(checked) => setValue("active", Boolean(checked))}
                             className=" flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-[4px] bg-white dark:bg-zinc-800 shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
                             id="c1"
@@ -220,12 +297,15 @@ export function CreateClientDialog({ title }: CreateClientDialogProps) {
 
                     <div className="mt-[25px] flex justify-end">
                         <Dialog.Close asChild>
-                            <Button onClick={handleSubmit(createClient)}>Salvar</Button>
+                            <Button onClick={handleSubmit(clientToBeEdited ? updateClient : createClient)}>Salvar</Button>
                         </Dialog.Close>
                     </div>
                     <Dialog.Close asChild>
                         <button
-                            onClick={() => setOpenDialog(false)}
+                            onClick={() => {
+                                setOpenCreateClientDialog(false)
+                                setClientToBeEdited(null)
+                            }}
                             className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                             aria-label="Close"
                         >

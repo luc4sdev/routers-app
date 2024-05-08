@@ -5,13 +5,16 @@ import { ClientCard } from "./components/ClientCard";
 import { useEffect, useState } from "react";
 import { Client } from "@/domain/entities/client";
 import { SkeletonClientCard } from "./components/SkeletonClientCard";
-import { CreateClientDialog } from "./components/Dialog";
+import { CreateClientDialog } from "./components/CreateClientDialog";
 
 export default function Clients() {
 
     const { data: clients, isLoading } = useGetAllClients()
 
     const [allClients, setAllClients] = useState<Client[]>([])
+    const [openClientDialog, setOpenCreateClientDialog] = useState(false)
+    const [clientToBeEdited, setClientToBeEdited] = useState<Client | null>()
+
 
     useEffect(() => {
 
@@ -19,14 +22,14 @@ export default function Clients() {
             setAllClients(clients);
         }
     }, [clients]);
-    console.log(clients)
+
     return (
         <div className="mt-6 flex flex-col px-6 gap-10">
             <h1 className="text-center lg:text-2xl">Verifique todos os clientes cadastrados</h1>
 
             <div className="flex flex-col gap-10">
                 <div className="flex justify-end px-6">
-                    <CreateClientDialog title="Cadastrar Cliente" />
+                    <CreateClientDialog openClientDialog={openClientDialog} setOpenCreateClientDialog={setOpenCreateClientDialog} clientToBeEdited={clientToBeEdited!} setClientToBeEdited={setClientToBeEdited} />
                 </div>
 
                 <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -37,7 +40,12 @@ export default function Clients() {
                         (
                             allClients.map((client, index) => {
                                 return (
-                                    <ClientCard name={client.name} type={client.type} active={client.active} index={index} key={client.id} />
+                                    <ClientCard key={client.id}
+                                        client={client}
+                                        index={index}
+                                        setOpenCreateClientDialog={setOpenCreateClientDialog}
+                                        setClientToBeEdited={setClientToBeEdited}
+                                    />
                                 )
                             })
                         )}
