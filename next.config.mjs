@@ -5,7 +5,7 @@ const nextConfig = {
           {
             source: '/',
             destination: '/clients',
-            permanent: true,
+            permanent: false,
           },
         ]
       },
