@@ -18,6 +18,6 @@ export class DeleteClientService implements DeleteClientUsecase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

@@ -18,6 +18,6 @@ export class CreateClientService implements CreateClientUsecase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

@@ -18,6 +18,6 @@ export class UpdateClientService implements UpdateClientUseCase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

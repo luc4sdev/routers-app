@@ -1,3 +1,5 @@
+import { Router } from "@/domain/entities/router"
+
 export interface DeleteRouterUsecase {
     perform(params: DeleteRouterUsecase.Params): Promise<DeleteRouterUsecase.Response>
 }
@@ -7,5 +9,5 @@ export namespace DeleteRouterUsecase {
         id: string
     }
 
-    export type Response = void | Error
+    export type Response = Router | Error
 }

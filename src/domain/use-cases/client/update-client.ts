@@ -1,3 +1,5 @@
+import { Client } from "@/domain/entities/client";
+
 export interface UpdateClientUseCase {
     perform(params: UpdateClientUseCase.Params): Promise<UpdateClientUseCase.Response>
 }
@@ -18,5 +20,5 @@ export namespace UpdateClientUseCase {
         };
     }
 
-    export type Response = void | Error
+    export type Response = Client | Error
 }

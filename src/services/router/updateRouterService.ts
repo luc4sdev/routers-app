@@ -18,6 +18,6 @@ export class UpdateRouterService implements UpdateRouterUseCase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

@@ -18,6 +18,6 @@ export class CreateRouterService implements CreateRouterUsecase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

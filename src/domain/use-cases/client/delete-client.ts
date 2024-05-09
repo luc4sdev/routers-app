@@ -1,3 +1,5 @@
+import { Client } from "@/domain/entities/client"
+
 export interface DeleteClientUsecase {
     perform(params: DeleteClientUsecase.Params): Promise<DeleteClientUsecase.Response>
 }
@@ -7,5 +9,5 @@ export namespace DeleteClientUsecase {
         id: string
     }
 
-    export type Response = void | Error
+    export type Response = Client | Error
 }

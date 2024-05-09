@@ -18,6 +18,6 @@ export class DeleteRouterService implements DeleteRouterUsecase {
             return response.error
         }
 
-        return
+        return response.body
     }
 }

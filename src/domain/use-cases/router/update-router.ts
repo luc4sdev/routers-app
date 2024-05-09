@@ -1,3 +1,5 @@
+import { Router } from "@/domain/entities/router";
+
 export interface UpdateRouterUseCase {
     perform(params: UpdateRouterUseCase.Params): Promise<UpdateRouterUseCase.Response>
 }
@@ -12,5 +14,5 @@ export namespace UpdateRouterUseCase {
         clientsIds?: string[];
     }
 
-    export type Response = void | Error
+    export type Response = Router | Error
 }

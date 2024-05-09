@@ -1,3 +1,5 @@
+import { Router } from "@/domain/entities/router";
+
 export interface CreateRouterUsecase {
     perform(params: CreateRouterUsecase.Params): Promise<CreateRouterUsecase.Response>
 }
@@ -11,5 +13,5 @@ export namespace CreateRouterUsecase {
         clientsIds: string[];
     }
 
-    export type Response = void | Error
+    export type Response = Router | Error
 }

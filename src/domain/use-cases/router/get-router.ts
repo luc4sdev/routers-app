@@ -1,4 +1,4 @@
-import { Client } from "@/domain/entities/client"
+import { Router } from "@/domain/entities/router"
 
 export interface GetRouterUseCase {
     perform(params: GetRouterUseCase.Params): Promise<GetRouterUseCase.Response>
@@ -9,5 +9,5 @@ export namespace GetRouterUseCase {
         routerId: string
     }
 
-    export type Response = Client | Error
+    export type Response = Router | Error
 }
