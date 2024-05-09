@@ -12,6 +12,8 @@ import { Address } from '@/domain/entities/address';
 import { useDeleteClient } from '@/hooks/client/useDeleteClient';
 import { useQueryClient } from '@tanstack/react-query';
 import { toastMessage } from '@/utils/helpers/toast-message';
+import { useGetRouter } from '@/hooks/router/useGetRouter';
+import { Router } from '@/domain/entities/router';
 
 interface ClientDataDialogProps {
     client: Client
@@ -25,13 +27,19 @@ export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientT
 
     const [openDialog, setOpenDialog] = useState(false)
     const [address, setAddress] = useState<Address>()
+    const [router, setRouter] = useState<Router>()
 
     const { data: addressData } = useGetAddress({ addressId: client.addressId })
+    const { data: routerData } = useGetRouter({ routerId: client.routerId! })
 
     const { mutate: mutateDeleteClient, isError: isErrorDeleteClient, error: errorDeleteClient } = useDeleteClient()
     const queryCLient = useQueryClient()
 
-    function isNotError(value: any): value is Address {
+    function isNotErrorAddress(value: any): value is Address {
+        return !(value instanceof Error);
+    }
+
+    function isNotErrorRouter(value: any): value is Router {
         return !(value instanceof Error);
     }
 
@@ -75,12 +83,17 @@ export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientT
             })
     }
 
-
     useEffect(() => {
-        if (addressData !== undefined && isNotError(addressData)) {
+        if (addressData !== undefined && isNotErrorAddress(addressData)) {
             setAddress(addressData);
         }
     }, [addressData]);
+
+    useEffect(() => {
+        if (routerData !== undefined && isNotErrorRouter(routerData)) {
+            setRouter(routerData);
+        }
+    }, [routerData]);
 
     return (
 
@@ -91,8 +104,8 @@ export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientT
                 <Button onClick={() => setOpenDialog(true)} className="w-auto md:w-36 xl:w-auto">Ver detalhes do cliente</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
-                <Dialog.Overlay className="backdrop-blur-sm data-[state=open]: fixed inset-0" />
-                <Dialog.Content className="overflow-y-scroll lg:overflow-y-hidden data-[state=open]: fixed top-[60%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[85vh] w-2/3 lg:w-[25vw]  max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                <Dialog.Overlay className="backdrop-blur-sm fixed inset-0" />
+                <Dialog.Content className="overflow-y-scroll scrollbar-hide fixed top-[60%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[85vh] w-2/3 lg:w-[25vw]  max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                     <Dialog.Title className="text-lg font-medium mt-5 lg:mt-0">
                         Detalhes de {client.name}
                     </Dialog.Title>
@@ -108,13 +121,25 @@ export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientT
                                 <p>Data de cadastro: {formatCreateDate(String(client.createdAt))}</p>
                             </div>
 
-                            <div className='flex flex-col gap-2 py-8'>
-                                <p>Endereço:</p>
-                                <p>Rua: {address?.street}</p>
-                                <p>CEP: {address?.cep}</p>
-                                <p>Número: {address?.number}</p>
-                                <p>Bairro: {address?.neighborhood}</p>
-                                <p>Cidade: {address?.city}</p>
+                            <div className='grid grid-cols-2'>
+                                <div className='col-span-2 lg:col-span-1 flex flex-col gap-2 py-8'>
+                                    <p>Endereço:</p>
+                                    <p>Rua: {address?.street}</p>
+                                    <p>CEP: {address?.cep}</p>
+                                    <p>Número: {address?.number}</p>
+                                    <p>Bairro: {address?.neighborhood}</p>
+                                    <p>Cidade: {address?.city}</p>
+                                </div>
+
+                                {(router && router.deleted === false) && (
+                                    <div className='flex flex-col gap-2 py-8'>
+                                        <p>Roteador:</p>
+                                        <p>Marca: {router.brand}</p>
+                                        <p>Modelo: {router.model}</p>
+                                        <p>Endereço IP: {router.ipAddress}</p>
+                                        <p>Endereço IPV6: {router.ipv6Address}</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
