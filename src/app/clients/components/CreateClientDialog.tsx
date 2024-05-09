@@ -158,6 +158,9 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                 setValue("address.cep", addressData.cep)
                 setValue("address.neighborhood", addressData.neighborhood)
                 setValue("address.city", addressData.city)
+                if (clientToBeEdited.active) {
+                    setValue("active", clientToBeEdited.active)
+                }
             }
         }
     }, [addressData])

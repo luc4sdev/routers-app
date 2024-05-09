@@ -151,6 +151,9 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             setValue("brand", routerToBeEdited.brand)
             setValue("model", routerToBeEdited.model)
             setClientsIds(getValues("clientsIds"))
+            if (routerToBeEdited.active) {
+                setValue("active", routerToBeEdited.active)
+            }
         }
     }, [routerToBeEdited])
 

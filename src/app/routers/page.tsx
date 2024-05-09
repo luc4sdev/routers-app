@@ -26,7 +26,7 @@ export default function Routers() {
 
     return (
         <div className="mt-6 flex flex-col px-6 gap-10">
-            <h1 className="text-center lg:text-2xl">Verifique todos os clientes cadastrados</h1>
+            <h1 className="text-center lg:text-2xl">Verifique todos os roteadores cadastrados</h1>
 
             <div className="flex flex-col gap-10">
                 <div className="flex justify-end px-6">
