@@ -35,8 +35,7 @@ export class RequestHelper implements RequestHelperInterface {
 
         try {
             const response = await axios.request({
-                //url: `${env.NEXT_PUBLIC_API_BASE_URL}${url}`, 
-                url: `http://localhost:3333${url}`,
+                url: `${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`,
                 method,
                 params: method === 'GET' ? data : undefined,
                 data,

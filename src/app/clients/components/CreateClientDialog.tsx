@@ -12,7 +12,7 @@ import { toastMessage } from '@/utils/helpers/toast-message';
 import { useUpdateClient } from '@/hooks/client/useUpdateClient';
 import { Client } from '@/domain/entities/client';
 import { useGetAddress } from '@/hooks/address/useGetAddress';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Address } from '@/domain/entities/address';
 
 interface CreateClientDialogProps {
@@ -47,7 +47,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
     const { mutate: mutateCreateClient } = useCreateClient()
     const { mutate: mutateUpdateClient } = useUpdateClient()
 
-    const { register, handleSubmit, setValue, getValues, reset, formState: { errors } } = useForm<createClientSchema>({
+    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<createClientSchema>({
         resolver: zodResolver(createClientSchema)
 
     })
@@ -185,7 +185,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="name">
                                 Nome
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="name" type="text" placeholder='John Doe' {...register("name")} />
                                 </InputRoot>
@@ -197,7 +197,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="document">
                                 CPF/CNPJ
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="document" type="text" placeholder='000.000.000-00' {...register("document")} />
                                 </InputRoot>
@@ -210,7 +210,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="birthDate">
                                 Data de nascimento
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl className='' id="birthDate" type="date"  {...register("birthDate")} />
                                 </InputRoot>
@@ -222,7 +222,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="street">
                                 Rua
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="street" type="text" placeholder='Rua abc' {...register("address.street")} />
                                 </InputRoot>
@@ -234,7 +234,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="number">
                                 Número
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="number" type="text" placeholder='52' {...register("address.number")} />
                                 </InputRoot>
@@ -246,7 +246,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="cep">
                                 CEP
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="cep" type="text" placeholder='71111-109' {...register("address.cep")} />
                                 </InputRoot>
@@ -258,7 +258,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="neighborhood">
                                 Bairro
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="neighborhood" type="text" placeholder='Bairro abc' {...register("address.neighborhood")} />
                                 </InputRoot>
@@ -270,7 +270,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                             <label className="text-sm" htmlFor="city">
                                 Cidade
                             </label>
-                            <div className='flex flex-col justify-center items-start'>
+                            <div className='flex flex-col justify-center items-start gap-1'>
                                 <InputRoot>
                                     <InputControl id="city" type="text" placeholder='Goiânia' {...register("address.city")} />
                                 </InputRoot>

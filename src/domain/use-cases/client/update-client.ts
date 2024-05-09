@@ -1,8 +1,8 @@
-export interface UpdateClientUsecase {
-    perform(params: UpdateClientUsecase.Params): Promise<UpdateClientUsecase.Response>
+export interface UpdateClientUseCase {
+    perform(params: UpdateClientUseCase.Params): Promise<UpdateClientUseCase.Response>
 }
 
-export namespace UpdateClientUsecase {
+export namespace UpdateClientUseCase {
     export type Params = {
         id: string;
         name?: string;

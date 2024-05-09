@@ -13,7 +13,7 @@ import { useDeleteClient } from '@/hooks/client/useDeleteClient';
 import { useQueryClient } from '@tanstack/react-query';
 import { toastMessage } from '@/utils/helpers/toast-message';
 
-interface ClientDataDialogDialogProps {
+interface ClientDataDialogProps {
     client: Client
     setOpenCreateClientDialog: (openDialog: boolean) => void
     setClientToBeEdited: (client: Client | null) => void
@@ -21,7 +21,7 @@ interface ClientDataDialogDialogProps {
 
 
 
-export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientToBeEdited }: ClientDataDialogDialogProps) {
+export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientToBeEdited }: ClientDataDialogProps) {
 
     const [openDialog, setOpenDialog] = useState(false)
     const [address, setAddress] = useState<Address>()

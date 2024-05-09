@@ -1,8 +1,8 @@
-import { UpdateClientUsecase } from '@/domain/use-cases/client/update-client'
+import { UpdateClientUseCase } from '@/domain/use-cases/client/update-client'
 import { UpdateClientService } from '@/services/client/updateClientService'
 import { useMutation } from '@tanstack/react-query'
 
-type UpdateClientProps = UpdateClientUsecase.Params
+type UpdateClientProps = UpdateClientUseCase.Params
 
 export async function updateClient({ id, name, type, document, birthDate, active, address }: UpdateClientProps) {
 
