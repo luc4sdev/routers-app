@@ -242,7 +242,7 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                         <div className='w-full grid grid-cols-2 gap-10'>
                             {allClients.map(client => {
                                 return (
-                                    <div className='relative col-span-2 lg:col-span-1 w-full h-8 flex justify-between items-center bg-emerald-500 rounded-lg px-3 py-4'>
+                                    <div key={client.id} className='relative col-span-2 lg:col-span-1 w-full h-8 flex justify-between items-center bg-emerald-500 rounded-lg px-3 py-4'>
                                         <div className='flex justify-center items-center gap-2'>
                                             <User className='text-white' />
                                             <p className='text-white'>{client.name}</p>

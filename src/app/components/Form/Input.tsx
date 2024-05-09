@@ -21,6 +21,7 @@ export const InputControl = React.forwardRef<HTMLInputElement, InputControlProps
         />
     )
 });
+InputControl.displayName = 'InputControl';
 
 interface InputRootProps extends ComponentProps<'div'> { }
 

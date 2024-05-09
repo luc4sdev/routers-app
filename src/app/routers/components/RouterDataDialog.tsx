@@ -107,7 +107,7 @@ export function RouterDataDialog({ router, setOpenCreateRouterDialog, setRouterT
                                         <p>Clientes:</p>
                                         {allClientsNotDeletedInRouter.map(client => {
                                             return (
-                                                <p>- {client.name}</p>
+                                                <p key={client.id}>- {client.name}</p>
                                             )
                                         })}
                                     </div>
