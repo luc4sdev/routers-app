@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "./components/Sidebar";
 import { ThemeProvider } from "next-themes";
