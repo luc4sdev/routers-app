@@ -33,7 +33,7 @@ export default function Routers() {
                     <CreateRouterDialog openRouterDialog={openRouterDialog} setOpenCreateRouterDialog={setOpenCreateRouterDialog} routerToBeEdited={routerToBeEdited!} setRouterToBeEdited={setRouterToBeEdited} />
                 </div>
 
-                <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-5">
                     {isLoading ? (
                         <SkeletonRouterCard />
                     )

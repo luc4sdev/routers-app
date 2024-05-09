@@ -23,7 +23,7 @@ interface CreateRouterDialogProps {
 }
 
 
-const createClientSchema = z.object({
+const createRouterSchema = z.object({
     ipAddress: z.string().min(1, 'Insira um endereço IP'),
     ipv6Address: z.string().min(1, 'Insira um endereço IPV6'),
     brand: z.string().min(1, 'Insira a marca do roteador'),
@@ -34,7 +34,7 @@ const createClientSchema = z.object({
 
 
 
-type createClientSchema = z.infer<typeof createClientSchema>
+type createRouterSchema = z.infer<typeof createRouterSchema>
 
 export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpenCreateRouterDialog, setRouterToBeEdited }: CreateRouterDialogProps) {
 
@@ -45,12 +45,12 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
     const { mutate: mutateCreateRouter } = useCreateRouter()
     const { mutate: mutateUpdateRouter } = useUpdateRouter()
 
-    const { register, handleSubmit, setValue, getValues, reset, formState: { errors } } = useForm<createClientSchema>({
-        resolver: zodResolver(createClientSchema)
+    const { register, handleSubmit, setValue, getValues, reset, formState: { errors } } = useForm<createRouterSchema>({
+        resolver: zodResolver(createRouterSchema)
 
     })
     const queryCLient = useQueryClient()
-    console.log(routerToBeEdited)
+
 
     const addClientId = (checked: Checkbox.CheckedState, newClientId: string) => {
 
@@ -58,22 +58,21 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             setClientsIds(prevState => [...prevState, newClientId]);
             return
         }
-        else {
-            const auxClientsIds = [...clientsIds];
-            const indexOfId = auxClientsIds.findIndex(clientId => clientId === newClientId);
-            console.log(indexOfId);
-            if (indexOfId !== -1) {
-                auxClientsIds.splice(indexOfId, 1);
-                setClientsIds(auxClientsIds);
-            }
+
+        const auxClientsIds = [...clientsIds];
+        const indexOfId = auxClientsIds.findIndex(clientId => clientId === newClientId);
+        if (indexOfId !== -1) {
+            auxClientsIds.splice(indexOfId, 1);
+            setClientsIds(auxClientsIds);
         }
+
     };
 
     useEffect(() => {
         setValue("clientsIds", clientsIds)
     }, [clientsIds])
 
-    async function createClient(data: createClientSchema) {
+    async function createRouter(data: createRouterSchema) {
         try {
             mutateCreateRouter({
                 ipAddress: data.ipAddress,
@@ -97,6 +96,10 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                 },
                 onError: (error) => {
                     console.error(error)
+                    toastMessage({
+                        message: 'Erro ao adicionar o roteador!',
+                        type: 'error'
+                    })
                 }
             })
 
@@ -107,7 +110,7 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
     }
 
 
-    async function updateRouter(data: createClientSchema) {
+    async function updateRouter(data: createRouterSchema) {
 
         try {
             mutateUpdateRouter({
@@ -135,6 +138,10 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                 },
                 onError: (error) => {
                     console.error(error)
+                    toastMessage({
+                        message: 'Erro ao atualizar o roteador!',
+                        type: 'error'
+                    })
                 }
             })
 
@@ -150,7 +157,11 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             setValue("ipv6Address", routerToBeEdited.ipv6Address)
             setValue("brand", routerToBeEdited.brand)
             setValue("model", routerToBeEdited.model)
-            setClientsIds(getValues("clientsIds"))
+
+            if (routerToBeEdited.clientsIds) {
+                setClientsIds(routerToBeEdited.clientsIds)
+            }
+
             if (routerToBeEdited.active) {
                 setValue("active", routerToBeEdited.active)
             }
@@ -173,8 +184,8 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                 <Button onClick={() => setOpenCreateRouterDialog(true)} className="w-auto md:w-36 xl:w-auto">Cadastrar Roteador</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
-                <Dialog.Overlay className="backdrop-blur-sm data-[state=open]: fixed inset-0" />
-                <Dialog.Content className="overflow-y-scroll data-[state=open]: fixed top-[60%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[85vh] w-[90vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                <Dialog.Overlay className="backdrop-blur-sm fixed inset-0" />
+                <Dialog.Content className="overflow-y-scroll scrollbar-hide fixed top-[60%] lg:top-[50%] left-[50%] lg:left-[65%] xl:left-[55%] max-h-[60vh] lg:max-h-[80vh] lg:w-[70vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                     <Dialog.Title className="text-lg font-medium">
                         Cadastro
                     </Dialog.Title>
@@ -284,7 +295,7 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
 
                     <div className="mt-[25px] flex justify-end">
                         <Dialog.Close asChild>
-                            <Button onClick={handleSubmit(routerToBeEdited ? updateRouter : createClient)}>Salvar</Button>
+                            <Button onClick={handleSubmit(routerToBeEdited ? updateRouter : createRouter)}>Salvar</Button>
                         </Dialog.Close>
                     </div>
                     <Dialog.Close asChild>

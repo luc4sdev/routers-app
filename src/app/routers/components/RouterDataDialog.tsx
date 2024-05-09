@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { XIcon } from 'lucide-react';
+import { User, XIcon } from 'lucide-react';
 import { Button } from '@/app/components/Button';
 import { useEffect, useState } from 'react';
 import { Client } from '@/domain/entities/client';
@@ -103,11 +103,11 @@ export function RouterDataDialog({ router, setOpenCreateRouterDialog, setRouterT
                                 <p>Modelo: {router.model}</p>
 
                                 {(allClientsNotDeletedInRouter && allClientsNotDeletedInRouter.length > 0) ? (
-                                    <div className='flex flex-col gap-3 mt-8'>
+                                    <div className='flex flex-col items-start gap-3 mt-8'>
                                         <p>Clientes:</p>
                                         {allClientsNotDeletedInRouter.map(client => {
                                             return (
-                                                <p key={client.id}>- {client.name}</p>
+                                                <p key={client.id} className='min-w-48 bg-emerald-500 px-3 py-2 rounded-lg flex gap-2 items-center'><User /> {client.name}</p>
                                             )
                                         })}
                                     </div>

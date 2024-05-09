@@ -9,7 +9,7 @@ export class GetRouterService implements GetRouterUseCase {
     ) { }
 
     async perform(params: GetRouterUseCase.Params): Promise<GetRouterUseCase.Response> {
-        console.log(params.routerId)
+
         const response = await this.requestHelper.make<GetRouterUseCase.Response>({
             url: `/router/${params.routerId}`,
             method: 'GET',

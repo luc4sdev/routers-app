@@ -22,7 +22,7 @@ export function Sidebar() {
             <Collapsible.Content forceMount className="flex flex-1 flex-col gap-6 data-[state=closed]:hidden lg:data-[state=closed]:flex">
                 <nav className="space-y-0.5">
                     <NavItem url="/clients" title="Clientes" icon={User} />
-                    <NavItem url="routers" title="Roteadores" icon={Router} />
+                    <NavItem url="/routers" title="Roteadores" icon={Router} />
                 </nav>
             </Collapsible.Content>
         </Collapsible.Root>

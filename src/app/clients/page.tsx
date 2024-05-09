@@ -32,7 +32,7 @@ export default function Clients() {
                     <CreateClientDialog openClientDialog={openClientDialog} setOpenCreateClientDialog={setOpenCreateClientDialog} clientToBeEdited={clientToBeEdited!} setClientToBeEdited={setClientToBeEdited} />
                 </div>
 
-                <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-5">
                     {isLoading ? (
                         <SkeletonClientCard />
                     )
