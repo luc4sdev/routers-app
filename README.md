@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 💻 Routers App 
 
-## Getting Started
+<h4>O projeto consiste em um front-end de uma aplicação de gerenciamento de clientes e roteadores. O projeto foi desenvolvido com Typescript, ReactJS, NextJS. Para a estilização foi utilizado o TailwindCSS e a biblioteca RadixUI para os componentes, o projeto está totalmente responsivo e seguindo as boas práticas de clean code, ui, ux. A validação dos formulários foi realizada com zod e react-hook-form, também foi utilizado o axios para a conexão com a API e para o tema da aplicação foi utilizada a biblioteca Next Themes. Para os testes foi utilizado o Cypress. Foi feito um design pattern inspirado na Clean Architecture e utilizado os princípios de SOLID para a construção de componentes. Foi realizado o deploy do projeto na plataforma Vercel.
+</h4>
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<br/>
+
+## 🚀 Link do deploy do projeto (clique para entrar)
+
+<a href="https://routers-app-eta.vercel.app/clients" target="_blank" rel="external">
+<img src="public/project-image.png" height="400" width="800" alt="Imagem do Projeto">
+</a>
+
+<h2>Link: <a href="https://routers-app-eta.vercel.app/clients" target="_blank" rel="external">Projeto</a></h2>
+
+<br/>
+<br/>
+
+## 💻 Pré-requisitos
+
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
+* Você tem uma máquina `<Windows / Linux / Mac>`
+* Você instalou a versão mais recente do `NodeJS`
+<br/>
+
+
+## ⚙️ Instalando
+
+Para instalar execute no terminal:
+
+npm:
+```
+npm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+yarn:
+```
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+pnpm:
+```
+pnpm i
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<br/>
 
-## Learn More
+## 🚀 Rodando o projeto
 
-To learn more about Next.js, take a look at the following resources:
+Primeiramente crie um arquivo ```.env.local``` na raíz do projeto e adicione a seguinte variável de ambiente e seu respectivo valor:
+<br/>
+<br/>
+Será a url do servidor back-end, geralmente é ```http://localhost:3333```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+NEXT_PUBLIC_API_BASE_URL="http://localhost:3333"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+Para rodar o projeto digite no terminal:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+npm:
+```
+npm run dev
+```
+yarn:
+```
+yarn dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+pnpm:
+```
+pnpm run dev
+```
+
+<br/>
+
+
+## 🧪 Rodando os testes
+
+Foram realizados testes utilizando o cypress, para rodar os testes digite o seguinte comando no terminal:
+
+npm:
+```
+npm run test
+```
+yarn:
+```
+yarn test
+```
+
+pnpm:
+```
+pnpm run test
+```
+
+<br/>
+
+## 🚀 Tecnologias utilizadas
+
+O projeto está desenvolvido utilizando as seguintes tecnologias:
+
+- Typescript <img width="25px" height="25px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" />
+- ReactJS <img width="25px" height="25px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" />
+- NextJS <img width="25px" height="25px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" />
+- TailwindCSS <img width="25px" height="25px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" />
+- Cypress <img width="25px" height="25px" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cypressio/cypressio-original.svg" />
+
