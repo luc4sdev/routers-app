@@ -5,15 +5,14 @@ import { useMutation } from '@tanstack/react-query'
 
 type CreateRouterProps = CreateRouterUsecase.Params
 
-export async function createRouter({ ipAddress, ipv6Address, brand, model, clientsIds, active }: CreateRouterProps) {
+export async function createRouter({ ipAddress, ipv6Address, brand, model, clientsIds }: CreateRouterProps) {
 
     const response = await CreateRouterService.instance.perform({
         ipAddress,
         ipv6Address,
         brand,
         model,
-        clientsIds,
-        active
+        clientsIds
     })
     if (response instanceof Error) throw response
 

@@ -14,6 +14,7 @@ import { useGetAllClients } from '@/hooks/client/useGetAllClients';
 import { useEffect, useState } from 'react';
 import { Client } from '@/domain/entities/client';
 import { useUpdateRouter } from '@/hooks/router/useUpdateRouter';
+import { useGetClient } from '@/hooks/client/useGetClient';
 
 interface CreateRouterDialogProps {
     openRouterDialog: boolean
@@ -28,8 +29,7 @@ const createRouterSchema = z.object({
     ipv6Address: z.string().min(1, 'Insira um endereço IPV6'),
     brand: z.string().min(1, 'Insira a marca do roteador'),
     model: z.string().min(1, 'Insira o modelo do roteador'),
-    clientsIds: z.array(z.string()),
-    active: z.boolean().default(false),
+    clientsIds: z.array(z.string())
 });
 
 
@@ -39,17 +39,23 @@ type createRouterSchema = z.infer<typeof createRouterSchema>
 export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpenCreateRouterDialog, setRouterToBeEdited }: CreateRouterDialogProps) {
 
     const [allClients, setAllClients] = useState<Client[]>([])
+    const [allClientsInRouter, setAllClientsInRouter] = useState<Client[]>([])
     const [clientsIds, setClientsIds] = useState<string[]>([])
 
+    const { data: clientData } = useGetClient(routerToBeEdited?.clientsIds ? routerToBeEdited?.clientsIds : []);
     const { data: clients } = useGetAllClients()
     const { mutate: mutateCreateRouter } = useCreateRouter()
     const { mutate: mutateUpdateRouter } = useUpdateRouter()
 
-    const { register, handleSubmit, setValue, getValues, reset, formState: { errors } } = useForm<createRouterSchema>({
+    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<createRouterSchema>({
         resolver: zodResolver(createRouterSchema)
 
     })
     const queryCLient = useQueryClient()
+
+    function isNotError(value: any): value is Client[] {
+        return !(value instanceof Error);
+    }
 
 
     const addClientId = (checked: Checkbox.CheckedState, newClientId: string) => {
@@ -65,12 +71,8 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             auxClientsIds.splice(indexOfId, 1);
             setClientsIds(auxClientsIds);
         }
-
+        console.log(auxClientsIds)
     };
-
-    useEffect(() => {
-        setValue("clientsIds", clientsIds)
-    }, [clientsIds])
 
     async function createRouter(data: createRouterSchema) {
         try {
@@ -79,12 +81,19 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                 ipv6Address: data.ipv6Address,
                 brand: data.brand,
                 model: data.model,
-                clientsIds: data.clientsIds,
-                active: data.active
+                clientsIds: data.clientsIds
             }, {
                 onSuccess: () => {
                     queryCLient.invalidateQueries({
                         queryKey: ['get-all-routers'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-all-clients'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-clients'],
                         exact: false
                     })
                     toastMessage({
@@ -119,12 +128,19 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                 ipv6Address: data.ipv6Address,
                 brand: data.brand,
                 model: data.model,
-                clientsIds: data.clientsIds,
-                active: data.active
+                clientsIds: data.clientsIds
             }, {
                 onSuccess: () => {
                     queryCLient.invalidateQueries({
                         queryKey: ['get-all-routers'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-all-clients'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-clients'],
                         exact: false
                     })
                     toastMessage({
@@ -152,6 +168,34 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
     }
 
     useEffect(() => {
+        if (clientData !== undefined && isNotError(clientData) && routerToBeEdited) {
+            setAllClientsInRouter((prevClients) => [...prevClients, ...clientData]);
+        }
+    }, [clientData, routerToBeEdited]);
+
+    useEffect(() => {
+        if (clients !== undefined && Array.isArray(clients) && routerToBeEdited) {
+            const clientsInactive = clients
+                .filter(client => client.active === false)
+                .filter(inactiveClient => !allClientsInRouter.some(client => client.id === inactiveClient.id));
+
+            setAllClientsInRouter((prevClients) => [...prevClients, ...clientsInactive]);
+        }
+    }, [clients, routerToBeEdited]);
+
+
+    useEffect(() => {
+        if (routerToBeEdited === null) {
+            setAllClientsInRouter([])
+        }
+        console.log(routerToBeEdited)
+    }, [routerToBeEdited])
+
+    useEffect(() => {
+        setValue("clientsIds", clientsIds)
+    }, [clientsIds])
+
+    useEffect(() => {
         if (routerToBeEdited) {
             setValue("ipAddress", routerToBeEdited.ipAddress)
             setValue("ipv6Address", routerToBeEdited.ipv6Address)
@@ -161,18 +205,14 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             if (routerToBeEdited.clientsIds) {
                 setClientsIds(routerToBeEdited.clientsIds)
             }
-
-            if (routerToBeEdited.active) {
-                setValue("active", routerToBeEdited.active)
-            }
         }
     }, [routerToBeEdited])
 
 
     useEffect(() => {
-
         if (clients !== undefined && Array.isArray(clients)) {
-            setAllClients(clients);
+            const clientsInactive = clients.filter(client => client.active === false)
+            setAllClients(clientsInactive);
         }
     }, [clients]);
 
@@ -181,7 +221,10 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
             open={openRouterDialog}
         >
             <Dialog.Trigger asChild>
-                <Button onClick={() => setOpenCreateRouterDialog(true)} className="w-auto md:w-36 xl:w-auto">Cadastrar Roteador</Button>
+                <Button onClick={() => {
+                    setOpenCreateRouterDialog(true);
+                    setRouterToBeEdited(null)
+                }} className="w-auto md:w-36 xl:w-auto">Cadastrar Roteador</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="backdrop-blur-sm fixed inset-0" />
@@ -254,43 +297,51 @@ export function CreateRouterDialog({ openRouterDialog, routerToBeEdited, setOpen
                         <p>Selecione os clientes para vincular ao roteador:</p>
 
                         <div className='w-full grid grid-cols-2 gap-10'>
-                            {allClients.map(client => {
-                                return (
-                                    <div key={client.id} className='relative col-span-2 lg:col-span-1 w-full h-8 flex justify-between items-center bg-emerald-500 rounded-lg px-3 py-4'>
-                                        <div className='flex justify-center items-center gap-2'>
-                                            <User className='text-white' />
-                                            <p className='text-white'>{client.name}</p>
-                                        </div>
-                                        <Checkbox.Root
-                                            defaultChecked={routerToBeEdited?.clientsIds ? routerToBeEdited?.clientsIds.includes(client.id) : false}
-                                            onCheckedChange={(checked) => addClientId(checked, client.id)}
-                                            className="absolute right-3 flex h-5 w-5 appearance-none items-center justify-center rounded-[4px] bg-white "
-                                            id="c1"
-                                        >
-                                            <Checkbox.Indicator className="text-zinc-950">
-                                                <CheckIcon />
-                                            </Checkbox.Indicator>
-                                        </Checkbox.Root>
-                                    </div>
+                            {routerToBeEdited !== null ?
+                                (
+                                    allClientsInRouter.map(client => {
+                                        return (
+                                            <div key={client.id} className='relative col-span-2 lg:col-span-1 w-full h-8 flex justify-between items-center bg-emerald-500 rounded-lg px-3 py-4'>
+                                                <div className='flex justify-center items-center gap-2'>
+                                                    <User className='text-white' />
+                                                    <p className='text-white'>{client.name}</p>
+                                                </div>
+                                                <Checkbox.Root
+                                                    defaultChecked={routerToBeEdited?.clientsIds ? routerToBeEdited?.clientsIds.includes(client.id) : false}
+                                                    onCheckedChange={(checked) => addClientId(checked, client.id)}
+                                                    className="absolute right-3 flex h-5 w-5 appearance-none items-center justify-center rounded-[4px] bg-white "
+                                                    id="c1"
+                                                >
+                                                    <Checkbox.Indicator className="text-zinc-950">
+                                                        <CheckIcon />
+                                                    </Checkbox.Indicator>
+                                                </Checkbox.Root>
+                                            </div>
+                                        )
+                                    })
                                 )
-                            })}
-                        </div>
-                    </div>
 
-                    <div className="flex items-center">
-                        <Checkbox.Root
-                            defaultChecked={routerToBeEdited ? routerToBeEdited.active! : false}
-                            onCheckedChange={(checked) => setValue("active", Boolean(checked))}
-                            className=" flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-[4px] bg-white dark:bg-zinc-800 shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
-                            id="c1"
-                        >
-                            <Checkbox.Indicator className="text-emerald-500">
-                                <CheckIcon />
-                            </Checkbox.Indicator>
-                        </Checkbox.Root>
-                        <label className="pl-[15px] text-[15px] leading-none dark:text-white" htmlFor="c1">
-                            Ativo
-                        </label>
+                                :
+                                allClients.map(client => {
+                                    return (
+                                        <div key={client.id} className='relative col-span-2 lg:col-span-1 w-full h-8 flex justify-between items-center bg-emerald-500 rounded-lg px-3 py-4'>
+                                            <div className='flex justify-center items-center gap-2'>
+                                                <User className='text-white' />
+                                                <p className='text-white'>{client.name}</p>
+                                            </div>
+                                            <Checkbox.Root
+                                                onCheckedChange={(checked) => addClientId(checked, client.id)}
+                                                className="absolute right-3 flex h-5 w-5 appearance-none items-center justify-center rounded-[4px] bg-white "
+                                                id="c1"
+                                            >
+                                                <Checkbox.Indicator className="text-zinc-950">
+                                                    <CheckIcon />
+                                                </Checkbox.Indicator>
+                                            </Checkbox.Root>
+                                        </div>
+                                    )
+                                })}
+                        </div>
                     </div>
 
                     <div className="mt-[25px] flex justify-end">

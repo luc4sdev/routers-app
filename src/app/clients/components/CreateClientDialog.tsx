@@ -1,6 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import { Button } from '@/app/components/Button';
 import { InputControl, InputRoot } from '@/app/components/Form/Input';
 import { z } from 'zod'
@@ -34,8 +33,7 @@ const createClientSchema = z.object({
     name: z.string().min(1, "Insira o nome"),
     document: z.string().min(11, "Insira o documento").max(14, 'O documento deve ser válido'),
     birthDate: z.string().min(1, "Insira a data de nascimemto"),
-    address: AddressSchema,
-    active: z.boolean().default(false)
+    address: AddressSchema
 })
 
 
@@ -71,8 +69,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                     cep: data.address.cep,
                     neighborhood: data.address.neighborhood,
                     city: data.address.city
-                },
-                active: data.active
+                }
             }, {
                 onSuccess: () => {
                     queryCLient.invalidateQueries({
@@ -118,8 +115,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                     cep: data.address.cep,
                     neighborhood: data.address.neighborhood,
                     city: data.address.city
-                },
-                active: data.active
+                }
             }, {
                 onSuccess: () => {
                     queryCLient.invalidateQueries({
@@ -166,9 +162,6 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                 setValue("address.cep", addressData.cep)
                 setValue("address.neighborhood", addressData.neighborhood)
                 setValue("address.city", addressData.city)
-                if (clientToBeEdited.active) {
-                    setValue("active", clientToBeEdited.active)
-                }
             }
         }
     }, [addressData])
@@ -288,22 +281,6 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                                 <p className="text-xs text-red-500 font-semibold">{errors.address?.city?.message}</p>
                             </div>
                         </fieldset>
-                    </div>
-
-                    <div className="flex items-center">
-                        <Checkbox.Root
-                            defaultChecked={clientToBeEdited ? clientToBeEdited.active! : false}
-                            onCheckedChange={(checked) => setValue("active", Boolean(checked))}
-                            className=" flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-[4px] bg-white dark:bg-zinc-800 shadow-[0_2px_10px] outline-none focus:shadow-[0_0_0_2px_black]"
-                            id="c1"
-                        >
-                            <Checkbox.Indicator className="text-emerald-500">
-                                <CheckIcon />
-                            </Checkbox.Indicator>
-                        </Checkbox.Root>
-                        <label className="pl-[15px] text-[15px] leading-none dark:text-white" htmlFor="c1">
-                            Ativo
-                        </label>
                     </div>
 
                     <div className="mt-[25px] flex justify-end">

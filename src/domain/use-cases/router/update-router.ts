@@ -10,7 +10,6 @@ export namespace UpdateRouterUseCase {
         brand?: string;
         model?: string;
         clientsIds?: string[];
-        active?: boolean;
     }
 
     export type Response = void | Error

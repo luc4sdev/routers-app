@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 
 type UpdateRouterProps = UpdateRouterUseCase.Params
 
-export async function updateRouter({ id, ipAddress, ipv6Address, brand, model, clientsIds, active }: UpdateRouterProps) {
+export async function updateRouter({ id, ipAddress, ipv6Address, brand, model, clientsIds }: UpdateRouterProps) {
 
     const response = await UpdateRouterService.instance.perform({
         id,
@@ -12,8 +12,7 @@ export async function updateRouter({ id, ipAddress, ipv6Address, brand, model, c
         ipv6Address,
         brand,
         model,
-        clientsIds,
-        active
+        clientsIds
     })
     if (response instanceof Error) throw response
 

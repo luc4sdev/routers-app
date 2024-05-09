@@ -53,6 +53,14 @@ export function RouterDataDialog({ router, setOpenCreateRouterDialog, setRouterT
                         queryKey: ['get-all-routers'],
                         exact: false
                     })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-all-clients'],
+                        exact: false
+                    })
+                    queryCLient.invalidateQueries({
+                        queryKey: ['get-clients'],
+                        exact: false
+                    })
                     toastMessage({
                         message: 'Roteador deletado com sucesso!',
                         type: 'success'

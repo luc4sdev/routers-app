@@ -1,5 +1,4 @@
 import { tv, VariantProps } from 'tailwind-variants'
-import { Slot } from '@radix-ui/react-slot'
 import { ButtonHTMLAttributes } from 'react'
 
 const button = tv({
@@ -30,7 +29,6 @@ export interface ButtonProps
 }
 
 export function Button({ asChild, variant, className, ...props }: ButtonProps) {
-    const Component = asChild ? Slot : 'button'
 
-    return <Component {...props} type='button' className={button({ variant, className })} />
+    return <button {...props} type='button' className={button({ variant, className })} />
 }
