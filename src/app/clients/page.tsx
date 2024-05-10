@@ -1,11 +1,12 @@
 'use client'
 
 import { useGetAllClients } from "@/hooks/client/useGetAllClients";
-import { ClientCard } from "./components/ClientCard";
 import { useEffect, useState } from "react";
 import { Client } from "@/domain/entities/client";
-import { SkeletonClientCard } from "./components/SkeletonClientCard";
 import { CreateClientDialog } from "./components/CreateClientDialog";
+import { Card } from "../components/Card";
+import { SkeletonCard } from "../components/SkeletonCard";
+import { User } from "lucide-react";
 
 export default function Clients() {
 
@@ -29,21 +30,30 @@ export default function Clients() {
 
             <div className="flex flex-col gap-10">
                 <div className="flex justify-end px-6">
-                    <CreateClientDialog openClientDialog={openClientDialog} setOpenCreateClientDialog={setOpenCreateClientDialog} clientToBeEdited={clientToBeEdited!} setClientToBeEdited={setClientToBeEdited} />
+                    <CreateClientDialog
+                        openClientDialog={openClientDialog}
+                        setOpenCreateClientDialog={setOpenCreateClientDialog}
+                        clientToBeEdited={clientToBeEdited!}
+                        setClientToBeEdited={setClientToBeEdited}
+                    />
                 </div>
 
                 <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-5">
                     {isLoading ? (
-                        <SkeletonClientCard />
+                        <SkeletonCard />
                     )
                         :
                         (
                             allClients.map((client, index) => {
                                 return (
-                                    <ClientCard key={client.id}
+                                    <Card
+                                        key={client.id}
+                                        title="Cliente"
+                                        active={client.active!}
                                         client={client}
                                         index={index}
-                                        setOpenCreateClientDialog={setOpenCreateClientDialog}
+                                        icon={User}
+                                        setOpenCreateDialog={setOpenCreateClientDialog}
                                         setClientToBeEdited={setClientToBeEdited}
                                     />
                                 )

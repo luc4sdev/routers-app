@@ -1,4 +1,4 @@
-export function SkeletonRouterCard() {
+export function SkeletonCard() {
     return (
         <>
             {[...Array(8)].map((_, index) => (

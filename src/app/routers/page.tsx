@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { SkeletonRouterCard } from "./components/SkeletonRouterCard";
-import { RouterCard } from "./components/RouterCard";
 import { useGetAllRouters } from "@/hooks/router/useGetAllRouters";
 import { Router } from "@/domain/entities/router";
 import { CreateRouterDialog } from "./components/CreateRouterDialog";
+import { Card } from "../components/Card";
+import { SkeletonCard } from "../components/SkeletonCard";
+import { Router as RouterIcon } from "lucide-react";
 
 
 export default function Routers() {
@@ -35,16 +36,20 @@ export default function Routers() {
 
                 <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-5">
                     {isLoading ? (
-                        <SkeletonRouterCard />
+                        <SkeletonCard />
                     )
                         :
                         (
                             allRouters.map((router, index) => {
                                 return (
-                                    <RouterCard key={router.id}
+                                    <Card
+                                        key={router.id}
+                                        title="Roteador"
+                                        active={router.active!}
                                         router={router}
                                         index={index}
-                                        setOpenCreateRouterDialog={setOpenCreateRouterDialog}
+                                        icon={RouterIcon}
+                                        setOpenCreateDialog={setOpenCreateRouterDialog}
                                         setRouterToBeEdited={setRouterToBeEdited}
                                     />
                                 )
