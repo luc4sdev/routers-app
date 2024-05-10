@@ -1,7 +1,17 @@
 ## 💻 Routers App 
 
-<h4>O projeto consiste em um front-end de uma aplicação de gerenciamento de clientes e roteadores. O projeto foi desenvolvido com Typescript, ReactJS, NextJS. Para a estilização foi utilizado o TailwindCSS e a biblioteca RadixUI para os componentes, o projeto está totalmente responsivo e seguindo as boas práticas de clean code, ui, ux. A validação dos formulários foi realizada com zod e react-hook-form, também foi utilizado o axios para a conexão com a API e para o tema da aplicação foi utilizada a biblioteca Next Themes. Para os testes foi utilizado o Cypress. Foi feito um design pattern inspirado na Clean Architecture e utilizado os princípios de SOLID para a construção de componentes. Foi realizado o deploy do projeto na plataforma Vercel.
-</h4>
+O projeto consiste em um front-end de uma aplicação de gerenciamento de clientes e roteadores. 
+
+Foi desenvolvido com Typescript, ReactJS, NextJS. 
+
+Para a estilização foi utilizado o TailwindCSS e a biblioteca RadixUI para os componentes, o projeto está totalmente responsivo e seguindo as boas práticas de clean code, ui, ux. 
+
+A validação dos formulários foi realizada com zod e react-hook-form, também foi utilizado o axios para a conexão com a API e TanStack Query para armazenar os dados. Para o tema da aplicação foi utilizada a biblioteca Next Themes. 
+
+Para os testes foi utilizado o Cypress. Foi feito um design pattern inspirado na Clean Architecture e utilizado os princípios de SOLID para a construção de componentes. 
+
+Foi realizado o deploy do projeto na plataforma Vercel.
+
 
 
 <br/>
@@ -22,8 +32,9 @@
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 * Você tem uma máquina `<Windows / Linux / Mac>`
 * Você instalou a versão mais recente do `NodeJS`
-<br/>
 
+<br/>
+<br/>
 
 ## ⚙️ Instalando
 
@@ -83,19 +94,25 @@ Foram realizados testes utilizando o cypress, para rodar os testes digite o segu
 
 npm:
 ```
-npm run test
+npx cypress open
 ```
 yarn:
 ```
-yarn test
+yarn cypress open
 ```
 
 pnpm:
 ```
-pnpm run test
+pnpm cypress open
 ```
 
 <br/>
+
+Após isso irá abrir a interface do Cypress. Você irá selecionar os Testes E2E e o navegador de sua preferência. Depois é só realizar os testes na interface.
+
+<br/>
+<br/>
+
 
 ## 🚀 Tecnologias utilizadas
 
