@@ -93,7 +93,7 @@ export function ClientDataDialog({ client, setOpenCreateClientDialog, setClientT
             </Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Overlay className="backdrop-blur-sm fixed inset-0" />
-                <Dialog.Content className="overflow-y-scroll scrollbar-hide fixed top-[55%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[80vh] lg:max-h-[85vh] w-11/12 lg:w-[35vw] xl:w-[25vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                <Dialog.Content className="overflow-y-scroll scrollbar-hide fixed top-[55%] lg:top-[50%] left-[50%] lg:left-[55%] max-h-[80vh] lg:max-h-[85vh] w-11/12 lg:w-[35vw] xl:w-[30vw] max-w-[800px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white dark:bg-zinc-700 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                     <Dialog.Title className="flex items-center gap-3 text-base lg:text-lg font-medium mt-5 lg:mt-0">
                         <UserSearch className='w-6 h-6' /> Detalhes de {client.name}
                     </Dialog.Title>
