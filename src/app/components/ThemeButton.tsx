@@ -10,7 +10,7 @@ export function ThemeButton() {
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
-                <button className="bg-transparent outline-none" aria-label="Customise options">
+                <button id="theme-button" className="bg-transparent outline-none" aria-label="Customise options">
                     {resolvedTheme === 'light'
                         ? <Sun className="w-5 h-5" />
                         : <Moon className="w-5 h-5" />

@@ -9,7 +9,7 @@
 ## 🚀 Link do deploy do projeto (clique para entrar)
 
 <a href="https://routers-app-eta.vercel.app/clients" target="_blank" rel="external">
-<img src="public/project-image.png" height="400" width="800" alt="Imagem do Projeto">
+<img src="public/project-image.png" height="350" width="750" alt="Imagem do Projeto">
 </a>
 
 <h2>Link: <a href="https://routers-app-eta.vercel.app/clients" target="_blank" rel="external">Projeto</a></h2>
