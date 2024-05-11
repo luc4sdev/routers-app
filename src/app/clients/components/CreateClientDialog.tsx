@@ -103,7 +103,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                 onError: (error) => {
                     console.error(error)
                     toastMessage({
-                        message: 'Erro ao criar o roteador!',
+                        message: error.message,
                         type: 'error'
                     })
                 }
@@ -154,7 +154,7 @@ export function CreateClientDialog({ openClientDialog, clientToBeEdited, setOpen
                 onError: (error) => {
                     console.error(error)
                     toastMessage({
-                        message: 'Erro ao atualizar o cliente!',
+                        message: error.message,
                         type: 'error'
                     })
                 }
